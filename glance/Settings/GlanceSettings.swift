@@ -109,6 +109,7 @@ final class GlanceSettings {
         static let preferredDisplayID = "GlanceSettings.preferredDisplayID"
         static let preferredDisplayName = "GlanceSettings.preferredDisplayName"
         static let autoLockIntervalDays = "GlanceSettings.autoLockIntervalDays"
+        static let allowContinuityCamera = "GlanceSettings.allowContinuityCamera"
         static let defaultCameraID = "GlanceSettings.defaultCameraID"
         static let builtInDisplayCameraID = "GlanceSettings.builtInDisplayCameraID"
         static let externalDisplayCameraID = "GlanceSettings.externalDisplayCameraID"
@@ -228,6 +229,9 @@ final class GlanceSettings {
     }
     /// Device `uniqueID`s, not device objects — devices can disconnect/
     /// reconnect between launches, but their unique ID is stable.
+    var allowContinuityCamera: Bool {
+        didSet { defaults.set(allowContinuityCamera, forKey: Key.allowContinuityCamera) }
+    }
     var defaultCameraID: String? {
         didSet { defaults.set(defaultCameraID, forKey: Key.defaultCameraID) }
     }
@@ -319,6 +323,7 @@ final class GlanceSettings {
         // enough not to leave an abandoned session live indefinitely.
         autoLockInterval = (defaults.object(forKey: Key.autoLockIntervalDays) as? Int)
             .flatMap(AutoLockInterval.init(rawValue:)) ?? .sevenDays
+        allowContinuityCamera = defaults.object(forKey: Key.allowContinuityCamera) as? Bool ?? true
         defaultCameraID = defaults.string(forKey: Key.defaultCameraID)
         builtInDisplayCameraID = defaults.string(forKey: Key.builtInDisplayCameraID)
         externalDisplayCameraID = defaults.string(forKey: Key.externalDisplayCameraID)
